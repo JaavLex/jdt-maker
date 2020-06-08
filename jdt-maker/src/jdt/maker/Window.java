@@ -25,6 +25,8 @@ public class Window extends JFrame{
     private JPanel fieldPane = new JPanel();
     private JPanel buttonPane = new JPanel();
 
+    private JTextField fieldAction = new JTextField("");
+
     private JButton buttonPrev = new JButton("Prev");
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
@@ -36,10 +38,15 @@ public class Window extends JFrame{
         this.setLocationRelativeTo(null);
         this.setResizable(false);
 
+        fieldAction.setPreferredSize(new Dimension(350, 150));
+
+        fieldPane.add(fieldAction);
+
         buttonPane.add(buttonPrev);
         buttonPane.add(buttonNext);
         buttonPane.add(buttonFinish);
 
+        container.add(fieldPane, BorderLayout.CENTER);
         container.add(buttonPane, BorderLayout.SOUTH);
         
         this.setContentPane(container);

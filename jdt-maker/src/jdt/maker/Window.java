@@ -18,8 +18,31 @@ import java.awt.* ;
 import javax.swing.* ;
 import javax.swing.event.* ;
 import java.text.DecimalFormat ;
+import java.awt.EventQueue;
+import java.awt.event.KeyEvent.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+
+
 
 public class Window extends JFrame{
+
+    var menuBar = new JMenuBar();
+
+    var fileMenu = new JMenu("Help");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+
+    public JMenuItem eMenuItem = new JMenuItem("About");
+        eMenuItem.setMnemonic(KeyEvent.VK_E);
+        eMenuItem.setToolTipText("Informations about the application");
+        eMenuItem.addActionListener((event) -> System.exit(0));
+
+        fileMenu.add(eMenuItem);
+        menuBar.add(fileMenu);
+
+    setJMenuBar(menuBar);
+
+
     private JPanel container = new JPanel();
     private JPanel hourPane = new JPanel();
     private JPanel fieldPane = new JPanel();

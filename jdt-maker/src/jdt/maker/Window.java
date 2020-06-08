@@ -1,15 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package jdt.maker;
 
-/**
- *
- * @author Alexa
- */
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,10 +20,30 @@ import javax.swing.event.* ;
 import java.text.DecimalFormat ;
 
 public class Window extends JFrame{
-    
+    private JPanel container = new JPanel();
+    private JPanel hourPane = new JPanel();
+    private JPanel fieldPane = new JPanel();
+    private JPanel buttonPane = new JPanel();
+
+    private JButton buttonPrev = new JButton("Prev");
+    private JButton buttonNext = new JButton("Next");
+    private JButton buttonFinish = new JButton("Finish");
 
     public Window(){
+        this.setTitle("JDT Maker");
+        this.setSize(400, 500);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+
+        buttonPane.add(buttonPrev);
+        buttonPane.add(buttonNext);
+        buttonPane.add(buttonFinish);
+
+        container.add(buttonPane, BorderLayout.SOUTH);
         
+        this.setContentPane(container);
+        this.setVisible(true);
     }
 
 }

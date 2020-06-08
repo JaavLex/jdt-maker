@@ -26,27 +26,16 @@ import javax.swing.JFrame;
 
 
 public class Window extends JFrame{
-
-    var menuBar = new JMenuBar();
-
-    var fileMenu = new JMenu("Help");
-        fileMenu.setMnemonic(KeyEvent.VK_F);
-
-    public JMenuItem eMenuItem = new JMenuItem("About");
-        eMenuItem.setMnemonic(KeyEvent.VK_E);
-        eMenuItem.setToolTipText("Informations about the application");
-        eMenuItem.addActionListener((event) -> System.exit(0));
-
-        fileMenu.add(eMenuItem);
-        menuBar.add(fileMenu);
-
-    setJMenuBar(menuBar);
-
-
     private JPanel container = new JPanel();
     private JPanel hourPane = new JPanel();
     private JPanel fieldPane = new JPanel();
     private JPanel buttonPane = new JPanel();
+
+    private JMenuBar menuBar = new JMenuBar();
+    private JMenu fileMenu = new JMenu("File");
+    private JMenuItem exitMenu = new JMenuItem("Exit");
+    private JMenu helpMenu = new JMenu("Help");
+    private JMenuItem aboutMenu = new JMenuItem("About");
 
     private JTextField fieldAction = new JTextField("");
 
@@ -60,6 +49,15 @@ public class Window extends JFrame{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+
+        exitMenu.setToolTipText("Informations about the application");
+        exitMenu.addActionListener((event) -> System.exit(0));
+
+        fileMenu.add(exitMenu);
+        helpMenu.add(aboutMenu);
+        menuBar.add(fileMenu);
+        menuBar.add(helpMenu);
+        setJMenuBar(menuBar);
 
         fieldAction.setPreferredSize(new Dimension(350, 150));
 

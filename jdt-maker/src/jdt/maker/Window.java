@@ -22,7 +22,11 @@ import java.awt.EventQueue;
 import java.awt.event.KeyEvent.*;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import java.io.FileWriter;
+import java.io.IOException;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 
 public class Window extends JFrame{
@@ -81,6 +85,8 @@ public class Window extends JFrame{
         fieldAction.setPreferredSize(new Dimension(350, 150));
 
         fieldPane.add(fieldAction);
+
+        buttonNext.addActionListener(new nextAction());
         
         buttonPane.add(buttonPrev);
         buttonPane.add(buttonNext);
@@ -96,4 +102,28 @@ public class Window extends JFrame{
         this.setVisible(true);
     }
 
+    class nextAction implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            JSONObject actionDetails = new JSONObject();
+            JSONObject actionObject = new JSONObject();
+            JSONArray actionList = new JSONArray();
+
+            actionDetails.put("Start", startCombo.getSelectedItem());
+            actionDetails.put("End", endCombo.getSelectedItem());
+            actionDetails.put("Action", fieldAction.getText());
+
+            actionObject.put(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem(), actionDetails);
+
+            actionList.add(actionObject);
+
+            try (FileWriter file = new FileWriter("JDT.json")) {
+ 
+                file.write(actionList.toJSONString());
+                file.flush();
+ 
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } 
+    }
 }

@@ -37,7 +37,13 @@ public class Window extends JFrame{
     private JMenu helpMenu = new JMenu("Help");
     private JMenuItem aboutMenu = new JMenuItem("About");
 
-    private JTextField fieldAction = new JTextField("");
+    private JLabel startLabel = new JLabel("Start Time");
+    private JLabel endLabel = new JLabel("Ending Time");
+
+    private JComboBox startCombo = new JComboBox();
+    private JComboBox endCombo = new JComboBox();
+
+    private JTextArea fieldAction = new HintTextField("Type what you did here...");
 
     private JButton buttonPrev = new JButton("Prev");
     private JButton buttonNext = new JButton("Next");
@@ -45,7 +51,8 @@ public class Window extends JFrame{
 
     public Window(){
         this.setTitle("JDT Maker");
-        this.setSize(400, 500);
+        this.setSize(400, 300);
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -59,13 +66,28 @@ public class Window extends JFrame{
         menuBar.add(helpMenu);
         setJMenuBar(menuBar);
 
+        for (int i = 0; i < 24; i++) {
+           String var1 = i + ":00";
+           String var2 = i + ":30";
+           startCombo.addItem(var1); endCombo.addItem(var1); 
+           startCombo.addItem(var2); endCombo.addItem(var2);
+        }
+
+        hourPane.add(startLabel);
+        hourPane.add(startCombo);
+        hourPane.add(endLabel);
+        hourPane.add(endCombo);
+
         fieldAction.setPreferredSize(new Dimension(350, 150));
 
         fieldPane.add(fieldAction);
-
+        
         buttonPane.add(buttonPrev);
         buttonPane.add(buttonNext);
         buttonPane.add(buttonFinish);
+        
+        container.setLayout(new BorderLayout());
+        container.add(hourPane, BorderLayout.NORTH);
 
         container.add(fieldPane, BorderLayout.CENTER);
         container.add(buttonPane, BorderLayout.SOUTH);

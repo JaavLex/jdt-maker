@@ -37,6 +37,9 @@ public class Window extends JFrame{
     private JMenu helpMenu = new JMenu("Help");
     private JMenuItem aboutMenu = new JMenuItem("About");
 
+    private JComboBox startCombo = new JComboBox();
+    private JComboBox endCombo = new JComboBox();
+
     private JTextField fieldAction = new JTextField("");
 
     private JButton buttonPrev = new JButton("Prev");
@@ -59,6 +62,16 @@ public class Window extends JFrame{
         menuBar.add(helpMenu);
         setJMenuBar(menuBar);
 
+        for (int i = 0; i < 24; i++) {
+           String var1 = i + ":00";
+           String var2 = i + ":30";
+           startCombo.addItem(var1); endCombo.addItem(var1); 
+           startCombo.addItem(var2); endCombo.addItem(var2);
+        }
+        
+        hourPane.add(startCombo);
+        hourPane.add(endCombo);
+
         fieldAction.setPreferredSize(new Dimension(350, 150));
 
         fieldPane.add(fieldAction);
@@ -66,7 +79,8 @@ public class Window extends JFrame{
         buttonPane.add(buttonPrev);
         buttonPane.add(buttonNext);
         buttonPane.add(buttonFinish);
-
+        
+        container.add(hourPane, BorderLayout.NORTH);
         container.add(fieldPane, BorderLayout.CENTER);
         container.add(buttonPane, BorderLayout.SOUTH);
         

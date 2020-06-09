@@ -52,6 +52,7 @@ public class Window extends JFrame{
     public Window(){
         this.setTitle("JDT Maker");
         this.setSize(400, 300);
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -87,6 +88,7 @@ public class Window extends JFrame{
         
         container.setLayout(new BorderLayout());
         container.add(hourPane, BorderLayout.NORTH);
+
         container.add(fieldPane, BorderLayout.CENTER);
         container.add(buttonPane, BorderLayout.SOUTH);
         

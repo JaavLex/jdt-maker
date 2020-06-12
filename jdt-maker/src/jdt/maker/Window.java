@@ -53,6 +53,8 @@ public class Window extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
 
+        this.setBackground(Color.WHITE);
+
         exitMenu.setToolTipText("Informations about the application");
         exitMenu.addActionListener((event) -> System.exit(0));
 
@@ -80,6 +82,18 @@ public class Window extends JFrame {
         fieldAction.setPreferredSize(new Dimension(350, 150));
 
         fieldPane.add(fieldAction);
+
+        buttonPrev.setBackground(Color.GRAY);
+        buttonPrev.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonPrev.setForeground(Color.WHITE);
+
+        buttonNext.setBackground(Color.BLUE);
+        buttonNext.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonNext.setForeground(Color.WHITE);
+
+        buttonFinish.setBackground(Color.GREEN);
+        buttonFinish.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonFinish.setForeground(Color.WHITE);
 
         buttonPrev.addActionListener(new BPListener());
         buttonNext.addActionListener(new BNListener());
@@ -114,11 +128,6 @@ public class Window extends JFrame {
 
             actionObject.put(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem(), actionDetails);
             actionList.add(actionObject);
-
-            actionDetails.remove("Start");
-            actionDetails.remove("End");
-            actionDetails.remove("Action");
-            actionObject.remove(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem());
 
             startCombo.setSelectedItem(endCombo.getSelectedItem());
 

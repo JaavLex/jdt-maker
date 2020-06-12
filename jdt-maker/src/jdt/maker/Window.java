@@ -1,24 +1,10 @@
 package jdt.maker;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import java.awt.* ;
-import javax.swing.* ;
-import javax.swing.event.* ;
-import java.text.DecimalFormat ;
-import java.awt.EventQueue;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import java.text.DecimalFormat;
 import java.awt.event.KeyEvent.*;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -27,9 +13,9 @@ import java.io.IOException;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import java.time.Instant.*;
 
-
-public class Window extends JFrame{
+public class Window extends JFrame {
     private JPanel container = new JPanel();
     private JPanel hourPane = new JPanel();
     private JPanel fieldPane = new JPanel();
@@ -53,7 +39,9 @@ public class Window extends JFrame{
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
 
-    public Window(){
+   //private JDateChooser date = new JDateChooser();
+
+    public Window() {
         this.setTitle("JDT Maker");
         this.setSize(400, 300);
 
@@ -71,12 +59,15 @@ public class Window extends JFrame{
         setJMenuBar(menuBar);
 
         for (int i = 0; i < 24; i++) {
-           String var1 = i + ":00";
-           String var2 = i + ":30";
-           startCombo.addItem(var1); endCombo.addItem(var1); 
-           startCombo.addItem(var2); endCombo.addItem(var2);
+            String var1 = i + ":00";
+            String var2 = i + ":30";
+            startCombo.addItem(var1);
+            endCombo.addItem(var1);
+            startCombo.addItem(var2);
+            endCombo.addItem(var2);
         }
 
+        //hourPane.add(valueDatePicker);
         hourPane.add(startLabel);
         hourPane.add(startCombo);
         hourPane.add(endLabel);
@@ -86,24 +77,37 @@ public class Window extends JFrame{
 
         fieldPane.add(fieldAction);
 
-        buttonNext.addActionListener(new nextAction());
-        
+        buttonPrev.addActionListener(new BPListener());
+        buttonNext.addActionListener(new BNListener());
+        buttonFinish.addActionListener(new BFListener());
         buttonPane.add(buttonPrev);
         buttonPane.add(buttonNext);
         buttonPane.add(buttonFinish);
-        
+
         container.setLayout(new BorderLayout());
         container.add(hourPane, BorderLayout.NORTH);
 
         container.add(fieldPane, BorderLayout.CENTER);
         container.add(buttonPane, BorderLayout.SOUTH);
-        
+
         this.setContentPane(container);
         this.setVisible(true);
     }
 
-    class nextAction implements ActionListener{
-        public void actionPerformed(ActionEvent e) {
+    class BPListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("PREV");
+        }
+    }
+
+    class BNListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("NEXT");
+            System.out.println(endCombo.getSelectedItem().toString());
+            startCombo.setSelectedItem(endCombo.getSelectedItem());
+
             JSONObject actionDetails = new JSONObject();
             JSONObject actionObject = new JSONObject();
             JSONArray actionList = new JSONArray();
@@ -124,6 +128,15 @@ public class Window extends JFrame{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } 
+        }
     }
+
+    class BFListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent arg0) {
+            System.out.println("FINISH");
+
+        }
+    }
+
 }

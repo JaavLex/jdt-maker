@@ -39,6 +39,10 @@ public class Window extends JFrame {
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
 
+    public JSONObject actionDetails = new JSONObject();
+    public JSONObject actionObject = new JSONObject();
+    public JSONArray actionList = new JSONArray();
+
    //private JDateChooser date = new JDateChooser();
 
     public Window() {
@@ -103,39 +107,34 @@ public class Window extends JFrame {
 
     class BNListener implements ActionListener {
 
-        public void actionPerformed(ActionEvent arg0) {
-            System.out.println("NEXT");
-            System.out.println(endCombo.getSelectedItem().toString());
-            startCombo.setSelectedItem(endCombo.getSelectedItem());
-
-            JSONObject actionDetails = new JSONObject();
-            JSONObject actionObject = new JSONObject();
-            JSONArray actionList = new JSONArray();
-
+        public void actionPerformed(ActionEvent arg0) {           
             actionDetails.put("Start", startCombo.getSelectedItem());
             actionDetails.put("End", endCombo.getSelectedItem());
             actionDetails.put("Action", fieldAction.getText());
 
             actionObject.put(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem(), actionDetails);
-
             actionList.add(actionObject);
 
-            try (FileWriter file = new FileWriter("JDT.json")) {
- 
-                file.write(actionList.toJSONString());
-                file.flush();
- 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            actionDetails.remove("Start");
+            actionDetails.remove("End");
+            actionDetails.remove("Action");
+            actionObject.remove(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem());
+
+            startCombo.setSelectedItem(endCombo.getSelectedItem());
+
+            fieldAction.setText("");
         }
     }
 
     class BFListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-            System.out.println("FINISH");
-
+            try (FileWriter file = new FileWriter("JDT.json")) {
+                file.write(actionList.toJSONString());
+                file.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

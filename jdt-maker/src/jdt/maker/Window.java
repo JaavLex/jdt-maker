@@ -14,8 +14,11 @@ import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.time.Instant.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Window extends JFrame {
+
     private JPanel container = new JPanel();
     private JPanel hourPane = new JPanel();
     private JPanel fieldPane = new JPanel();
@@ -39,11 +42,9 @@ public class Window extends JFrame {
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
 
-    public JSONObject actionDetails = new JSONObject();
-    public JSONObject actionObject = new JSONObject();
-    public JSONArray actionList = new JSONArray();
+    public int itemNumber = 0;
 
-   //private JDateChooser date = new JDateChooser();
+    public JSONObject jsonTitle = new JSONObject();
 
     public Window() {
         this.setTitle("JDT Maker");
@@ -121,17 +122,22 @@ public class Window extends JFrame {
 
     class BNListener implements ActionListener {
 
-        public void actionPerformed(ActionEvent arg0) {           
-            actionDetails.put("Start", startCombo.getSelectedItem());
-            actionDetails.put("End", endCombo.getSelectedItem());
-            actionDetails.put("Action", fieldAction.getText());
+        public void actionPerformed(ActionEvent arg0) {
 
-            actionObject.put(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem(), actionDetails);
-            actionList.add(actionObject);
+            JSONObject jsonDetail = new JSONObject();
+
+            jsonDetail.put("Start", startCombo.getSelectedItem());
+            jsonDetail.put("End", endCombo.getSelectedItem());
+            jsonDetail.put("Action", fieldAction.getText());
+
+            jsonTitle.put(itemNumber, jsonDetail);
+
+
+            System.out.println(jsonTitle.toJSONString());
 
             startCombo.setSelectedItem(endCombo.getSelectedItem());
-
             fieldAction.setText("");
+            itemNumber++;
         }
     }
 
@@ -139,7 +145,7 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
             try (FileWriter file = new FileWriter("JDT.json")) {
-                file.write(actionList.toJSONString());
+                file.write(jsonTitle.toJSONString());
                 file.flush();
             } catch (IOException e) {
                 e.printStackTrace();

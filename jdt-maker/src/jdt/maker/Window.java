@@ -42,11 +42,10 @@ public class Window extends JFrame {
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
 
-    public Collection<JSONArray> items = new ArrayList<JSONArray>();
+    public int itemNumber = 0;
 
-    public JSONArray actionList = new JSONArray();
+    public JSONObject jsonTitle = new JSONObject();
 
-    //private JDateChooser date = new JDateChooser();
     public Window() {
         this.setTitle("JDT Maker");
         this.setSize(400, 300);
@@ -111,23 +110,19 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
 
-            JSONObject actionDetails = new JSONObject();
-            JSONObject actionObject = new JSONObject();
-            actionDetails.put("Start", startCombo.getSelectedItem());
-            actionDetails.put("End", endCombo.getSelectedItem());
-            actionDetails.put("Action", fieldAction.getText());
-            actionObject.put(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem(), actionDetails);
-            System.out.println("actionObject: " + actionObject);
+            JSONObject jsonDetail = new JSONObject();
 
-            actionList.add(actionObject);
-            items.add(actionList);
-            System.out.println("items : " + items);
+            jsonDetail.put("Start", startCombo.getSelectedItem());
+            jsonDetail.put("End", endCombo.getSelectedItem());
+            jsonDetail.put("Action", fieldAction.getText());
 
-            System.out.println("actionList: " + actionList);
-            actionDetails.clear();
+            jsonTitle.put(itemNumber, jsonDetail);
+
+            System.out.println(jsonTitle.toJSONString());
 
             startCombo.setSelectedItem(endCombo.getSelectedItem());
             fieldAction.setText("");
+            itemNumber++;
         }
     }
 
@@ -135,7 +130,7 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
             try (FileWriter file = new FileWriter("JDT.json")) {
-                file.write(actionList.toJSONString());
+                file.write(jsonTitle.toJSONString());
                 file.flush();
             } catch (IOException e) {
                 e.printStackTrace();

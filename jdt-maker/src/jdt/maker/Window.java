@@ -6,10 +6,16 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.text.DecimalFormat;
 import java.awt.event.KeyEvent.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import java.time.Instant.*;
 
 public class Window extends JFrame {
-
     private JPanel container = new JPanel();
     private JPanel hourPane = new JPanel();
     private JPanel fieldPane = new JPanel();
@@ -33,6 +39,10 @@ public class Window extends JFrame {
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
 
+    public JSONObject actionDetails = new JSONObject();
+    public JSONObject actionObject = new JSONObject();
+    public JSONArray actionList = new JSONArray();
+
    //private JDateChooser date = new JDateChooser();
 
     public Window() {
@@ -42,6 +52,8 @@ public class Window extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+
+        this.setBackground(Color.WHITE);
 
         exitMenu.setToolTipText("Informations about the application");
         exitMenu.addActionListener((event) -> System.exit(0));
@@ -71,10 +83,21 @@ public class Window extends JFrame {
 
         fieldPane.add(fieldAction);
 
+        buttonPrev.setBackground(Color.GRAY);
+        buttonPrev.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonPrev.setForeground(Color.WHITE);
+
+        buttonNext.setBackground(Color.BLUE);
+        buttonNext.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonNext.setForeground(Color.WHITE);
+
+        buttonFinish.setBackground(Color.GREEN);
+        buttonFinish.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonFinish.setForeground(Color.WHITE);
+
         buttonPrev.addActionListener(new BPListener());
         buttonNext.addActionListener(new BNListener());
         buttonFinish.addActionListener(new BFListener());
-
         buttonPane.add(buttonPrev);
         buttonPane.add(buttonNext);
         buttonPane.add(buttonFinish);
@@ -98,18 +121,29 @@ public class Window extends JFrame {
 
     class BNListener implements ActionListener {
 
-        public void actionPerformed(ActionEvent arg0) {
-            System.out.println("NEXT");
-            System.out.println(endCombo.getSelectedItem().toString());
+        public void actionPerformed(ActionEvent arg0) {           
+            actionDetails.put("Start", startCombo.getSelectedItem());
+            actionDetails.put("End", endCombo.getSelectedItem());
+            actionDetails.put("Action", fieldAction.getText());
+
+            actionObject.put(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem(), actionDetails);
+            actionList.add(actionObject);
+
             startCombo.setSelectedItem(endCombo.getSelectedItem());
+
+            fieldAction.setText("");
         }
     }
 
     class BFListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-            System.out.println("FINISH");
-
+            try (FileWriter file = new FileWriter("JDT.json")) {
+                file.write(actionList.toJSONString());
+                file.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

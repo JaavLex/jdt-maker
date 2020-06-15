@@ -14,8 +14,11 @@ import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.time.Instant.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Window extends JFrame {
+
     private JPanel container = new JPanel();
     private JPanel hourPane = new JPanel();
     private JPanel fieldPane = new JPanel();
@@ -39,12 +42,11 @@ public class Window extends JFrame {
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
 
-    public JSONObject actionDetails = new JSONObject();
-    public JSONObject actionObject = new JSONObject();
+    public Collection<JSONArray> items = new ArrayList<JSONArray>();
+
     public JSONArray actionList = new JSONArray();
 
-   //private JDateChooser date = new JDateChooser();
-
+    //private JDateChooser date = new JDateChooser();
     public Window() {
         this.setTitle("JDT Maker");
         this.setSize(400, 300);
@@ -107,21 +109,24 @@ public class Window extends JFrame {
 
     class BNListener implements ActionListener {
 
-        public void actionPerformed(ActionEvent arg0) {           
+        public void actionPerformed(ActionEvent arg0) {
+
+            JSONObject actionDetails = new JSONObject();
+            JSONObject actionObject = new JSONObject();
             actionDetails.put("Start", startCombo.getSelectedItem());
             actionDetails.put("End", endCombo.getSelectedItem());
             actionDetails.put("Action", fieldAction.getText());
-
             actionObject.put(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem(), actionDetails);
-            actionList.add(actionObject);
+            System.out.println("actionObject: " + actionObject);
 
-            actionDetails.remove("Start");
-            actionDetails.remove("End");
-            actionDetails.remove("Action");
-            actionObject.remove(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem());
+            actionList.add(actionObject);
+            items.add(actionList);
+            System.out.println("items : " + items);
+
+            System.out.println("actionList: " + actionList);
+            actionDetails.clear();
 
             startCombo.setSelectedItem(endCombo.getSelectedItem());
-
             fieldAction.setText("");
         }
     }

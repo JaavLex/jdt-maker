@@ -20,6 +20,7 @@ import java.util.Collection;
 public class Window extends JFrame {
 
     private JPanel container = new JPanel();
+    //private JPanel datePane = new JPanel();
     private JPanel hourPane = new JPanel();
     private JPanel fieldPane = new JPanel();
     private JPanel buttonPane = new JPanel();
@@ -30,9 +31,11 @@ public class Window extends JFrame {
     private JMenu helpMenu = new JMenu("Help");
     private JMenuItem aboutMenu = new JMenuItem("About");
 
+    private JLabel dateLabel = new JLabel("Date");
     private JLabel startLabel = new JLabel("Start Time");
     private JLabel endLabel = new JLabel("Ending Time");
 
+    private JTextField fieldDate = new JTextField();
     private JComboBox startCombo = new JComboBox();
     private JComboBox endCombo = new JComboBox();
 
@@ -49,11 +52,11 @@ public class Window extends JFrame {
     //private JDateChooser date = new JDateChooser();
     public Window() {
         this.setTitle("JDT Maker");
-        this.setSize(400, 300);
+        this.setSize(600, 500);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
+        this.setResizable(true);
 
         exitMenu.setToolTipText("Informations about the application");
         exitMenu.addActionListener((event) -> System.exit(0));
@@ -73,7 +76,11 @@ public class Window extends JFrame {
             endCombo.addItem(var2);
         }
 
+
         //hourPane.add(valueDatePicker);
+        fieldDate.setPreferredSize(new Dimension(80, 20));
+        hourPane.add(dateLabel);
+        hourPane.add(fieldDate);
         hourPane.add(startLabel);
         hourPane.add(startCombo);
         hourPane.add(endLabel);
@@ -95,6 +102,9 @@ public class Window extends JFrame {
 
         container.add(fieldPane, BorderLayout.CENTER);
         container.add(buttonPane, BorderLayout.SOUTH);
+        //container.add(hourPane, BorderLayout.EAST);
+
+        fieldDate.setText(String.valueOf(java.time.LocalDate.now()));
 
         this.setContentPane(container);
         this.setVisible(true);

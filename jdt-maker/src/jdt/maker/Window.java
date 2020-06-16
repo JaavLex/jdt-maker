@@ -10,9 +10,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileReader;
+import java.util.Iterator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import java.time.Instant.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -134,32 +137,25 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
 
-            JSONObject jsonDetail = new JSONObject();
+            String[][] actionListLocal = new String[50][3];
 
-            jsonDetail.put("Start", startCombo.getSelectedItem());
-            jsonDetail.put("End", endCombo.getSelectedItem());
-            jsonDetail.put("Action", fieldAction.getText());
+            actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
+            actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
+            actionListLocal[itemNumber][2] = fieldAction.getText();
 
-            jsonTitle.put(itemNumber, jsonDetail);
-
-
-            System.out.println(jsonTitle.toJSONString());
+            System.out.print(actionListLocal);
+            System.out.print(actionListLocal[itemNumber][0] + " " + actionListLocal[itemNumber][1] + " " + actionListLocal[itemNumber][2]);
 
             startCombo.setSelectedItem(endCombo.getSelectedItem());
             fieldAction.setText("");
-            itemNumber++;
+            itemNumber++;       
         }
     }
 
     class BFListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-            try (FileWriter file = new FileWriter("JDT.json")) {
-                file.write(jsonTitle.toJSONString());
-                file.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 

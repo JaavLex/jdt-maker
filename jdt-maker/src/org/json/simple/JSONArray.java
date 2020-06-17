@@ -378,4 +378,8 @@ public class JSONArray extends ArrayList implements JSONAware, JSONStreamAware {
 	public String toString() {
 		return toJSONString();
 	}
+
+    public void fill(Object object) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

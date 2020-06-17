@@ -10,13 +10,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileReader;
+import java.util.Iterator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import java.time.Instant.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Window extends JFrame {
+
     private JPanel container = new JPanel();
+    //private JPanel datePane = new JPanel();
     private JPanel hourPane = new JPanel();
     private JPanel fieldPane = new JPanel();
     private JPanel buttonPane = new JPanel();
@@ -27,9 +34,11 @@ public class Window extends JFrame {
     private JMenu helpMenu = new JMenu("Help");
     private JMenuItem aboutMenu = new JMenuItem("About");
 
+    private JLabel dateLabel = new JLabel("Date");
     private JLabel startLabel = new JLabel("Start Time");
     private JLabel endLabel = new JLabel("Ending Time");
 
+    private JTextField fieldDate = new JTextField();
     private JComboBox startCombo = new JComboBox();
     private JComboBox endCombo = new JComboBox();
 
@@ -39,19 +48,19 @@ public class Window extends JFrame {
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
 
-    public JSONObject actionDetails = new JSONObject();
-    public JSONObject actionObject = new JSONObject();
-    public JSONArray actionList = new JSONArray();
+    private String[][] actionListLocal = new String[50][3];
 
-   //private JDateChooser date = new JDateChooser();
+    public int itemNumber = 0;
+
+    public JSONObject jsonTitle = new JSONObject();
 
     public Window() {
         this.setTitle("JDT Maker");
-        this.setSize(400, 300);
+        this.setSize(600, 500);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        this.setResizable(false);
+        this.setResizable(true);
 
         this.setBackground(Color.WHITE);
 
@@ -73,7 +82,11 @@ public class Window extends JFrame {
             endCombo.addItem(var2);
         }
 
+
         //hourPane.add(valueDatePicker);
+        fieldDate.setPreferredSize(new Dimension(80, 20));
+        hourPane.add(dateLabel);
+        hourPane.add(fieldDate);
         hourPane.add(startLabel);
         hourPane.add(startCombo);
         hourPane.add(endLabel);
@@ -107,6 +120,9 @@ public class Window extends JFrame {
 
         container.add(fieldPane, BorderLayout.CENTER);
         container.add(buttonPane, BorderLayout.SOUTH);
+        //container.add(hourPane, BorderLayout.EAST);
+
+        fieldDate.setText(String.valueOf(java.time.LocalDate.now()));
 
         this.setContentPane(container);
         this.setVisible(true);
@@ -115,35 +131,46 @@ public class Window extends JFrame {
     class BPListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-            System.out.println("PREV");
+
+            if (itemNumber > 0) {
+                actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
+                actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
+                actionListLocal[itemNumber][2] = fieldAction.getText();  
+
+                itemNumber--;
+
+                startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
+                endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
+                fieldAction.setText(actionListLocal[itemNumber][2]);
+            }
         }
     }
 
     class BNListener implements ActionListener {
 
-        public void actionPerformed(ActionEvent arg0) {           
-            actionDetails.put("Start", startCombo.getSelectedItem());
-            actionDetails.put("End", endCombo.getSelectedItem());
-            actionDetails.put("Action", fieldAction.getText());
+        public void actionPerformed(ActionEvent arg0) {
 
-            actionObject.put(startCombo.getSelectedItem() + " - " + endCombo.getSelectedItem(), actionDetails);
-            actionList.add(actionObject);
+            actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
+            actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
+            actionListLocal[itemNumber][2] = fieldAction.getText();  
+
 
             startCombo.setSelectedItem(endCombo.getSelectedItem());
-
             fieldAction.setText("");
+            itemNumber++;   
+
+            if (actionListLocal[itemNumber][0] != null || actionListLocal[itemNumber][1] != null || actionListLocal[itemNumber][2] != null) {
+                startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
+                endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
+                fieldAction.setText(actionListLocal[itemNumber][2]);
+            }
         }
     }
 
     class BFListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-            try (FileWriter file = new FileWriter("JDT.json")) {
-                file.write(actionList.toJSONString());
-                file.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 

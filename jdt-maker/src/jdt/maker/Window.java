@@ -48,6 +48,8 @@ public class Window extends JFrame {
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
 
+    private String[][] actionListLocal = new String[50][3];
+
     public int itemNumber = 0;
 
     public JSONObject jsonTitle = new JSONObject();
@@ -137,14 +139,9 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
 
-            String[][] actionListLocal = new String[50][3];
-
             actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
             actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
-            actionListLocal[itemNumber][2] = fieldAction.getText();
-
-            System.out.print(actionListLocal);
-            System.out.print(actionListLocal[itemNumber][0] + " " + actionListLocal[itemNumber][1] + " " + actionListLocal[itemNumber][2]);
+            actionListLocal[itemNumber][2] = fieldAction.getText();  
 
             startCombo.setSelectedItem(endCombo.getSelectedItem());
             fieldAction.setText("");
@@ -155,7 +152,8 @@ public class Window extends JFrame {
     class BFListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-
+            System.out.print(actionListLocal[0][0] + " " + actionListLocal[0][1] + " " + actionListLocal[0][2]);
+            System.out.print(actionListLocal[1][0] + " " + actionListLocal[1][1] + " " + actionListLocal[1][2]);
         }
     }
 

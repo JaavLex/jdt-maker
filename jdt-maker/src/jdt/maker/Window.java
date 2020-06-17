@@ -132,6 +132,12 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
             System.out.println("PREV");
+
+            itemNumber--;
+
+            startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
+            endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
+            fieldAction.setText(actionListLocal[itemNumber][2]);
         }
     }
 
@@ -143,17 +149,19 @@ public class Window extends JFrame {
             actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
             actionListLocal[itemNumber][2] = fieldAction.getText();  
 
+
             startCombo.setSelectedItem(endCombo.getSelectedItem());
             fieldAction.setText("");
-            itemNumber++;       
+            itemNumber++;   
+
+
         }
     }
 
     class BFListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-            System.out.print(actionListLocal[0][0] + " " + actionListLocal[0][1] + " " + actionListLocal[0][2]);
-            System.out.print(actionListLocal[1][0] + " " + actionListLocal[1][1] + " " + actionListLocal[1][2]);
+
         }
     }
 

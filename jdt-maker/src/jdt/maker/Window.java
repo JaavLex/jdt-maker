@@ -10,9 +10,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileReader;
+import java.util.Iterator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import java.time.Instant.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,6 +47,8 @@ public class Window extends JFrame {
     private JButton buttonPrev = new JButton("Prev");
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
+
+    private String[][] actionListLocal = new String[50][3];
 
     public int itemNumber = 0;
 
@@ -134,32 +139,21 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
 
-            JSONObject jsonDetail = new JSONObject();
-
-            jsonDetail.put("Start", startCombo.getSelectedItem());
-            jsonDetail.put("End", endCombo.getSelectedItem());
-            jsonDetail.put("Action", fieldAction.getText());
-
-            jsonTitle.put(itemNumber, jsonDetail);
-
-
-            System.out.println(jsonTitle.toJSONString());
+            actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
+            actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
+            actionListLocal[itemNumber][2] = fieldAction.getText();  
 
             startCombo.setSelectedItem(endCombo.getSelectedItem());
             fieldAction.setText("");
-            itemNumber++;
+            itemNumber++;       
         }
     }
 
     class BFListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-            try (FileWriter file = new FileWriter("JDT.json")) {
-                file.write(jsonTitle.toJSONString());
-                file.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            System.out.print(actionListLocal[0][0] + " " + actionListLocal[0][1] + " " + actionListLocal[0][2]);
+            System.out.print(actionListLocal[1][0] + " " + actionListLocal[1][1] + " " + actionListLocal[1][2]);
         }
     }
 

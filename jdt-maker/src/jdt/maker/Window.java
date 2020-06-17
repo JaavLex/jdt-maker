@@ -99,14 +99,21 @@ public class Window extends JFrame {
         buttonPrev.setBackground(Color.GRAY);
         buttonPrev.setFont(new Font("Verdana", Font.BOLD, 10));
         buttonPrev.setForeground(Color.WHITE);
+        buttonPrev.setOpaque(true);
+        buttonPrev.setBorderPainted(false);
 
         buttonNext.setBackground(Color.BLUE);
         buttonNext.setFont(new Font("Verdana", Font.BOLD, 10));
         buttonNext.setForeground(Color.WHITE);
+        buttonNext.setOpaque(true);
+        buttonNext.setBorderPainted(false);
+
 
         buttonFinish.setBackground(Color.GREEN);
         buttonFinish.setFont(new Font("Verdana", Font.BOLD, 10));
         buttonFinish.setForeground(Color.WHITE);
+        buttonFinish.setOpaque(true);
+        buttonFinish.setBorderPainted(false);
 
         buttonPrev.addActionListener(new BPListener());
         buttonNext.addActionListener(new BNListener());

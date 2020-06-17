@@ -131,13 +131,18 @@ public class Window extends JFrame {
     class BPListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-            System.out.println("PREV");
 
-            itemNumber--;
+            if (itemNumber > 0) {
+                actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
+                actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
+                actionListLocal[itemNumber][2] = fieldAction.getText();  
 
-            startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
-            endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
-            fieldAction.setText(actionListLocal[itemNumber][2]);
+                itemNumber--;
+
+                startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
+                endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
+                fieldAction.setText(actionListLocal[itemNumber][2]);
+            }
         }
     }
 
@@ -154,7 +159,11 @@ public class Window extends JFrame {
             fieldAction.setText("");
             itemNumber++;   
 
-
+            if (actionListLocal[itemNumber][0] != null || actionListLocal[itemNumber][1] != null || actionListLocal[itemNumber][2] != null) {
+                startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
+                endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
+                fieldAction.setText(actionListLocal[itemNumber][2]);
+            }
         }
     }
 

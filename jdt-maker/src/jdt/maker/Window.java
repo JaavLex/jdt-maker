@@ -181,20 +181,21 @@ public class Window extends JFrame {
         public void actionPerformed(ActionEvent arg0) {
             System.out.println(Arrays.deepToString(actionListLocal));
 
-            try {
-                FileWriter MarkDown = new FileWriter("JDT.md");
-                BufferedWriter info = new BufferedWriter(MarkDown);
 
-                info.write(String.format("# JDT " + fieldDate.getText() + "%n%n"));
+            try (FileWriter file = new FileWriter("JDT.md")) {
+
+                file.write(String.format("# JDT " + fieldDate.getText() + "%n%n"));
 
                 for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
-                    info.write(String.format("## " + startCombo.getSelectedItem().toString() + " - " + endCombo.getSelectedItem().toString() + "%n"));
-                    info.write(String.format(fieldAction.getText() + "%n%n"));
-                }
-            }
-            catch (IOException e) {
+
+                    file.write(String.format("## " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
+                    file.write(String.format(actionListLocal[i][2] + "%n%n"));
+                } 
+                file.flush();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
     }
 

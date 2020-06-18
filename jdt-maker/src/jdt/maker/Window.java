@@ -184,7 +184,7 @@ public class Window extends JFrame {
             System.out.println(Arrays.deepToString(actionListLocal));
 
 
-            try (FileWriter file = new FileWriter("JDT.md")) {
+            try (FileWriter file = new FileWriter("JDT" + fieldDate.getText() + ".md")) {
 
                 file.write(String.format("# JDT " + fieldDate.getText() + "%n%n"));
                 file.write(String.format("---%n%n"));

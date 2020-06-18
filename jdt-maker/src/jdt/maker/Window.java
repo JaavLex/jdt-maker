@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent.*;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.util.Iterator;
@@ -48,6 +49,8 @@ public class Window extends JFrame {
     private JButton buttonPrev = new JButton("Prev");
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
+
+    private JOptionPane exitMessage = new JOptionPane();
 
     private String[][] actionListLocal = new String[50][3];
 
@@ -179,6 +182,33 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
             System.out.println(Arrays.deepToString(actionListLocal));
+
+
+            try (FileWriter file = new FileWriter("JDT" + fieldDate.getText() + ".md")) {
+
+                file.write(String.format("# JDT " + fieldDate.getText() + "%n%n"));
+                file.write(String.format("---%n%n"));
+                file.write(String.format("## Summary%n"));
+
+                for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
+
+                    file.write(String.format("1. " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
+                } 
+
+                file.write(String.format("%n---%n%n"));
+
+                for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
+
+                    file.write(String.format("## " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
+                    file.write(String.format("**Action completed :** " + actionListLocal[i][2] + "%n%n"));
+                } 
+                file.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            exitMessage.showMessageDialog(null, "JDT.md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
         }
     }
 

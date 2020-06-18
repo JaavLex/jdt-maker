@@ -187,11 +187,20 @@ public class Window extends JFrame {
             try (FileWriter file = new FileWriter("JDT.md")) {
 
                 file.write(String.format("# JDT " + fieldDate.getText() + "%n%n"));
+                file.write(String.format("---%n%n"));
+                file.write(String.format("## Summary%n"));
+
+                for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
+
+                    file.write(String.format("1. " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
+                } 
+
+                file.write(String.format("%n---%n%n"));
 
                 for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
 
                     file.write(String.format("## " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
-                    file.write(String.format(actionListLocal[i][2] + "%n%n"));
+                    file.write(String.format("**Action completed :** " + actionListLocal[i][2] + "%n%n"));
                 } 
                 file.flush();
             } catch (IOException e) {

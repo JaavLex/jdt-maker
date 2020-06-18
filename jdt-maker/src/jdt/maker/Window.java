@@ -50,6 +50,8 @@ public class Window extends JFrame {
     private JButton buttonNext = new JButton("Next");
     private JButton buttonFinish = new JButton("Finish");
 
+    private JOptionPane exitMessage = new JOptionPane();
+
     private String[][] actionListLocal = new String[50][3];
 
     public int itemNumber = 0;
@@ -196,7 +198,8 @@ public class Window extends JFrame {
                 e.printStackTrace();
             }
 
-            System.exit(0)
+            exitMessage.showMessageDialog(null, "JDT.md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
         }
     }
 

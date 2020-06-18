@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent.*;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.util.Iterator;
@@ -179,6 +180,21 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
             System.out.println(Arrays.deepToString(actionListLocal));
+
+            try {
+                FileWriter MarkDown = new FileWriter("JDT.md");
+                BufferedWriter info = new BufferedWriter(MarkDown);
+
+                info.write(String.format("# JDT " + fieldDate.getText() + "%n%n"));
+
+                for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
+                    info.write(String.format("## " + startCombo.getSelectedItem().toString() + " - " + endCombo.getSelectedItem().toString() + "%n"));
+                    info.write(String.format(fieldAction.getText() + "%n%n"));
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

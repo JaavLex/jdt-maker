@@ -48,6 +48,7 @@ public class Window extends JFrame {
 
     private JButton buttonPrev = new JButton("Prev");
     private JButton buttonNext = new JButton("Next");
+    private JButton buttonSave = new JButton("Save");
     private JButton buttonFinish = new JButton("Finish");
 
     private JOptionPane exitMessage = new JOptionPane();
@@ -112,6 +113,11 @@ public class Window extends JFrame {
         buttonNext.setOpaque(true);
         buttonNext.setBorderPainted(false);
 
+        buttonSave.setBackground(Color.BLUE);
+        buttonSave.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonSave.setForeground(Color.WHITE);
+        buttonSave.setOpaque(true);
+        buttonSave.setBorderPainted(false);
 
         buttonFinish.setBackground(Color.GREEN);
         buttonFinish.setFont(new Font("Verdana", Font.BOLD, 10));
@@ -121,9 +127,11 @@ public class Window extends JFrame {
 
         buttonPrev.addActionListener(new BPListener());
         buttonNext.addActionListener(new BNListener());
+        buttonSave.addActionListener(new BSListener());
         buttonFinish.addActionListener(new BFListener());
         buttonPane.add(buttonPrev);
         buttonPane.add(buttonNext);
+        buttonPane.add(buttonSave);
         buttonPane.add(buttonFinish);
 
         container.setLayout(new BorderLayout());
@@ -165,7 +173,6 @@ public class Window extends JFrame {
             actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
             actionListLocal[itemNumber][2] = fieldAction.getText();  
 
-
             startCombo.setSelectedItem(endCombo.getSelectedItem());
             fieldAction.setText("");
             itemNumber++;   
@@ -175,6 +182,17 @@ public class Window extends JFrame {
                 endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
                 fieldAction.setText(actionListLocal[itemNumber][2]);
             }
+        }
+    }
+
+    class BSListener implements ActionListener {
+
+
+        public void actionPerformed(ActionEvent arg0) {
+
+            actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
+            actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
+            actionListLocal[itemNumber][2] = fieldAction.getText(); 
         }
     }
 

@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.time.Instant.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class Window extends JFrame {
@@ -177,7 +178,7 @@ public class Window extends JFrame {
     class BFListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-
+            System.out.println(Arrays.deepToString(actionListLocal));
         }
     }
 

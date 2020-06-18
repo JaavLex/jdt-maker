@@ -196,6 +196,7 @@ public class Window extends JFrame {
                 e.printStackTrace();
             }
 
+            System.exit(0)
         }
     }
 

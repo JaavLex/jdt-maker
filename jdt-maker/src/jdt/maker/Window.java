@@ -4,28 +4,17 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.text.DecimalFormat;
+import java.text.*;
 import java.awt.event.KeyEvent.*;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.FileReader;
-import java.util.Iterator;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import java.io.*;
+import java.util.*;
+import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import java.time.Instant.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
 public class Window extends JFrame {
 
     private JPanel container = new JPanel();
-    //private JPanel datePane = new JPanel();
     private JPanel hourPane = new JPanel();
     private JPanel fieldPane = new JPanel();
     private JPanel buttonPane = new JPanel();
@@ -87,8 +76,6 @@ public class Window extends JFrame {
             endCombo.addItem(var2);
         }
 
-
-        //hourPane.add(valueDatePicker);
         fieldDate.setPreferredSize(new Dimension(80, 20));
         hourPane.add(dateLabel);
         hourPane.add(fieldDate);
@@ -139,7 +126,6 @@ public class Window extends JFrame {
 
         container.add(fieldPane, BorderLayout.CENTER);
         container.add(buttonPane, BorderLayout.SOUTH);
-        //container.add(hourPane, BorderLayout.EAST);
 
         fieldDate.setText(String.valueOf(java.time.LocalDate.now()));
 
@@ -209,14 +195,12 @@ public class Window extends JFrame {
                 file.write(String.format("## Summary%n"));
 
                 for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
-
                     file.write(String.format("1. " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
                 } 
 
                 file.write(String.format("%n---%n%n"));
 
                 for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
-
                     file.write(String.format("## " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
                     file.write(String.format("**Action completed :** " + actionListLocal[i][2] + "%n%n"));
                 } 

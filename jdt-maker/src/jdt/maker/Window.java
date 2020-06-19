@@ -225,7 +225,7 @@ public class Window extends JFrame {
                 e.printStackTrace();
             }
 
-            exitMessage.showMessageDialog(null, "JDT.md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
+            exitMessage.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
     }

@@ -68,8 +68,17 @@ public class Window extends JFrame {
         setJMenuBar(menuBar);
 
         for (int i = 0; i < 24; i++) {
-            String var1 = i + ":00";
-            String var2 = i + ":30";
+            String var1 = "";
+            String var2 = ""; 
+
+            if (i < 10) {
+                var1 = "0" + i + ":00";
+                var2 = "0" + i + ":30";
+            } else {
+                var1 = i + ":00";
+                var2 = i + ":30";
+            }
+            
             startCombo.addItem(var1);
             endCombo.addItem(var1);
             startCombo.addItem(var2);

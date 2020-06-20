@@ -212,28 +212,6 @@ public class Window extends JFrame {
                 e.printStackTrace();
             }
 
-/*          System.out.println(Arrays.deepToString(actionListLocal));
-            try (FileWriter file = new FileWriter("JDT" + fieldDate.getText() + ".md")) {
-
-                file.write(String.format("# JDT " + fieldDate.getText() + "%n%n"));
-                file.write(String.format("---%n%n"));
-                file.write(String.format("## Summary%n"));
-
-                for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
-                    file.write(String.format("1. " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
-                }
-
-                file.write(String.format("%n---%n%n"));
-
-                for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
-                    file.write(String.format("## " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
-                    file.write(String.format("**Action completed :** " + actionListLocal[i][2] + "%n%n"));
-                }
-                file.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }

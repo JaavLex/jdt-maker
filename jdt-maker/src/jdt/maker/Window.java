@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.lang.reflect.Array;
 import java.text.*;
 import java.awt.event.KeyEvent.*;
 import java.io.*;
@@ -136,6 +137,16 @@ public class Window extends JFrame {
         return df.format(new Date());
     }
 
+    // Well, using Java's LocalTime would probably be better...
+    public ArrayList sort_jdtentries(ArrayList JDTEntries) {
+        Collections.sort(JDTEntries, new Comparator<JDTEntry>(){
+            public int compare(JDTEntry s1, JDTEntry s2) {
+                return s1.get_start_time().split(":")[0].compareToIgnoreCase(s2.get_start_time().split(":")[0]);
+            }
+        });
+        return JDTEntries;
+    }
+
     // Previous Button
     class BPListener implements ActionListener {
 
@@ -165,6 +176,8 @@ public class Window extends JFrame {
             if (!startCombo.getSelectedItem().toString().equals("") && !endCombo.getSelectedItem().toString().equals("") && !fieldAction.getText().equals("")) {
                 JDTEntry my_entry = new JDTEntry(startCombo.getSelectedItem().toString(), endCombo.getSelectedItem().toString(), fieldAction.getText());
                 JDTEntries.add(my_entry);
+                // Sort ArrayList<JDTEntries> on JDTEntry.ste_start_time()
+                sort_jdtentries(JDTEntries);
             } else {
                 System.out.println("Next button used without all value");
             }
@@ -184,6 +197,7 @@ public class Window extends JFrame {
     // Save Button
     class BSListener implements ActionListener {
         public void actionPerformed(ActionEvent arg0) {
+            sort_jdtentries(JDTEntries);
             System.out.println(JDTEntries);
             actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
             actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
@@ -197,6 +211,8 @@ public class Window extends JFrame {
         private String md_output;
 
         public void actionPerformed(ActionEvent arg0) {
+
+            sort_jdtentries(JDTEntries);
 
             md_output = "# Journal de travail " + fieldDate.getText();
             for (JDTEntry entry : JDTEntries) {

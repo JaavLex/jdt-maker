@@ -41,6 +41,7 @@ public class Window extends JFrame {
     private final JOptionPane exitMessage = new JOptionPane();
     private final String[][] actionListLocal = new String[50][3];
     public int itemNumber = 0;
+    public int cursor = 0; // Used to iterate across JDTEntries items
     public JSONObject jsonTitle = new JSONObject();
     public ArrayList<JDTEntry> JDTEntries = new ArrayList<JDTEntry>();
 
@@ -138,8 +139,9 @@ public class Window extends JFrame {
     }
 
     // Well, using Java's LocalTime would probably be better...
+    // Sort ArrayList<JDTEntries> on JDTEntry.ste_start_time()
     public ArrayList sort_jdtentries(ArrayList JDTEntries) {
-        Collections.sort(JDTEntries, new Comparator<JDTEntry>(){
+        Collections.sort(JDTEntries, new Comparator<JDTEntry>() {
             public int compare(JDTEntry s1, JDTEntry s2) {
                 return s1.get_start_time().split(":")[0].compareToIgnoreCase(s2.get_start_time().split(":")[0]);
             }
@@ -152,59 +154,64 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
 
-            if (itemNumber > 0) {
-                actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
-                actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
-                actionListLocal[itemNumber][2] = fieldAction.getText();
+            cursor--;
 
-                itemNumber--;
+            System.out.println(JDTEntries.size());
+            System.out.println(cursor);
 
-                startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
-                endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
-                fieldAction.setText(actionListLocal[itemNumber][2]);
-            }
+            // Get the JDTEntry at the cursor position
+            JDTEntry my_entry = JDTEntries.get(cursor);
+
+            // Set the values
+            startCombo.setSelectedItem(my_entry.get_start_time());
+            endCombo.setSelectedItem(my_entry.get_end_time());
+            fieldAction.setText(my_entry.get_body());
+
         }
     }
 
     // Next Button
     class BNListener implements ActionListener {
+
         public void actionPerformed(ActionEvent arg0) {
             actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
             actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
             actionListLocal[itemNumber][2] = fieldAction.getText();
 
+            // Only do something if times and body are set
             if (!startCombo.getSelectedItem().toString().equals("") && !endCombo.getSelectedItem().toString().equals("") && !fieldAction.getText().equals("")) {
+                // Create a new JDTEntry
                 JDTEntry my_entry = new JDTEntry(startCombo.getSelectedItem().toString(), endCombo.getSelectedItem().toString(), fieldAction.getText());
+                // Save the new JDTEntry in JDTEntries ArrayList
                 JDTEntries.add(my_entry);
-                // Sort ArrayList<JDTEntries> on JDTEntry.ste_start_time()
+                // Sort the JDTEntries based on start_time
                 sort_jdtentries(JDTEntries);
+
+                // Increment the cursor position
+                cursor++;
+                // Set the start_time with the previous end_time
+                startCombo.setSelectedItem(endCombo.getSelectedItem());
+                // Clear the body
+                fieldAction.setText("");
             } else {
                 System.out.println("Next button used without all value");
             }
 
-            startCombo.setSelectedItem(endCombo.getSelectedItem());
-            fieldAction.setText("");
-            itemNumber++;
-
-            if (actionListLocal[itemNumber][0] != null || actionListLocal[itemNumber][1] != null || actionListLocal[itemNumber][2] != null) {
-                startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
-                endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
-                fieldAction.setText(actionListLocal[itemNumber][2]);
-            }
         }
     }
 
     // Save Button
     class BSListener implements ActionListener {
+
         public void actionPerformed(ActionEvent arg0) {
+
+            // TODO: Call the same code as "Next button", without clearing the body, changing the time or incrementing the cursor
             sort_jdtentries(JDTEntries);
             System.out.println(JDTEntries);
-            actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
-            actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
-            actionListLocal[itemNumber][2] = fieldAction.getText();
+
         }
     }
-    
+
     // Finish Button
     class BFListener implements ActionListener {
 

@@ -1,5 +1,7 @@
 # jdt-maker
 
+v1.0.0-beta
+
 ---
 
 ## About

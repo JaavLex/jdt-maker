@@ -1,5 +1,7 @@
 package jdt.maker;
 
+// v1.0.0-beta
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

@@ -221,25 +221,11 @@ public class Window extends JFrame {
     // Finish Button
     class BFListener implements ActionListener {
 
-        private String md_output;
-
         public void actionPerformed(ActionEvent arg0) {
 
             sort_jdtentries(JDTEntries);
 
-            md_output = "# Journal de travail " + fieldDate.getText();
-            for (JDTEntry entry : JDTEntries) {
-                md_output += entry.get_md_entry();
-            }
-            md_output += System.lineSeparator() + System.lineSeparator() + "<!-- Generated on " + get_today_iso_date() + " with JDT Maker -->";
-            System.out.println(md_output);
-
-            try (FileWriter file = new FileWriter("JDT" + fieldDate.getText() + ".md")) {
-                file.write(md_output);
-                file.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            JDTEntries entries_to_md = new JDTEntries(fieldDate.getText(), JDTEntries);
 
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);

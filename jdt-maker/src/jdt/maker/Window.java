@@ -4,49 +4,46 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.lang.reflect.Array;
 import java.text.*;
 import java.awt.event.KeyEvent.*;
 import java.io.*;
 import java.util.*;
+import java.util.ArrayList;
+
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
+
 import java.time.Instant.*;
 
 public class Window extends JFrame {
 
-    private JPanel container = new JPanel();
-    private JPanel hourPane = new JPanel();
-    private JPanel fieldPane = new JPanel();
-    private JPanel buttonPane = new JPanel();
-
-    private JMenuBar menuBar = new JMenuBar();
-    private JMenu fileMenu = new JMenu("File");
-    private JMenuItem exitMenu = new JMenuItem("Exit");
-    private JMenu helpMenu = new JMenu("Help");
-    private JMenuItem aboutMenu = new JMenuItem("About");
-
-    private JLabel dateLabel = new JLabel("Date");
-    private JLabel startLabel = new JLabel("Start Time");
-    private JLabel endLabel = new JLabel("Ending Time");
-
-    private JTextField fieldDate = new JTextField();
-    private JComboBox startCombo = new JComboBox();
-    private JComboBox endCombo = new JComboBox();
-
-    private JTextArea fieldAction = new HintTextField("Type what you did here...");
-
-    private JButton buttonPrev = new JButton("Prev");
-    private JButton buttonNext = new JButton("Next");
-    private JButton buttonSave = new JButton("Save");
-    private JButton buttonFinish = new JButton("Finish");
-
-    private JOptionPane exitMessage = new JOptionPane();
-
-    private String[][] actionListLocal = new String[50][3];
-
+    private final JPanel container = new JPanel();
+    private final JPanel hourPane = new JPanel();
+    private final JPanel fieldPane = new JPanel();
+    private final JPanel buttonPane = new JPanel();
+    private final JMenuBar menuBar = new JMenuBar();
+    private final JMenu fileMenu = new JMenu("File");
+    private final JMenuItem exitMenu = new JMenuItem("Exit");
+    private final JMenu helpMenu = new JMenu("Help");
+    private final JMenuItem aboutMenu = new JMenuItem("About");
+    private final JLabel dateLabel = new JLabel("Date");
+    private final JLabel startLabel = new JLabel("Start Time");
+    private final JLabel endLabel = new JLabel("Ending Time");
+    private final JTextField fieldDate = new JTextField();
+    private final JComboBox startCombo = new JComboBox();
+    private final JComboBox endCombo = new JComboBox();
+    private final JTextArea fieldAction = new HintTextField("Type what you did here...");
+    private final JButton buttonPrev = new JButton("Prev");
+    private final JButton buttonNext = new JButton("Next");
+    private final JButton buttonSave = new JButton("Save");
+    private final JButton buttonFinish = new JButton("Finish");
+    private final JOptionPane exitMessage = new JOptionPane();
+    private final String[][] actionListLocal = new String[50][3];
     public int itemNumber = 0;
-
+    public int cursor = 0; // Used to iterate across JDTEntries items
     public JSONObject jsonTitle = new JSONObject();
+    public ArrayList<JDTEntry> JDTEntries = new ArrayList<JDTEntry>();
 
     public Window() {
         this.setTitle("JDT Maker");
@@ -133,85 +130,113 @@ public class Window extends JFrame {
         this.setVisible(true);
     }
 
+    // https://stackoverflow.com/a/3914498
+    public String get_today_iso_date() {
+        TimeZone tz = TimeZone.getTimeZone("UTC+1");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+        df.setTimeZone(tz);
+        return df.format(new Date());
+    }
+
+    // Well, using Java's LocalTime would probably be better...
+    // Sort ArrayList<JDTEntries> on JDTEntry.ste_start_time()
+    public ArrayList sort_jdtentries(ArrayList JDTEntries) {
+        Collections.sort(JDTEntries, new Comparator<JDTEntry>() {
+            public int compare(JDTEntry s1, JDTEntry s2) {
+                return s1.get_start_time().split(":")[0].compareToIgnoreCase(s2.get_start_time().split(":")[0]);
+            }
+        });
+        return JDTEntries;
+    }
+
+    // Previous Button
     class BPListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
 
-            if (itemNumber > 0) {
-                actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
-                actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
-                actionListLocal[itemNumber][2] = fieldAction.getText();  
+            cursor--;
 
-                itemNumber--;
+            System.out.println(JDTEntries.size());
+            System.out.println(cursor);
 
-                startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
-                endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
-                fieldAction.setText(actionListLocal[itemNumber][2]);
-            }
+            // Get the JDTEntry at the cursor position
+            JDTEntry my_entry = JDTEntries.get(cursor);
+
+            // Set the values
+            startCombo.setSelectedItem(my_entry.get_start_time());
+            endCombo.setSelectedItem(my_entry.get_end_time());
+            fieldAction.setText(my_entry.get_body());
+
         }
     }
 
+    // Next Button
     class BNListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-
             actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
             actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
-            actionListLocal[itemNumber][2] = fieldAction.getText();  
+            actionListLocal[itemNumber][2] = fieldAction.getText();
 
-            startCombo.setSelectedItem(endCombo.getSelectedItem());
-            fieldAction.setText("");
-            itemNumber++;   
+            // Only do something if times and body are set
+            if (!startCombo.getSelectedItem().toString().equals("") && !endCombo.getSelectedItem().toString().equals("") && !fieldAction.getText().equals("")) {
+                // Create a new JDTEntry
+                JDTEntry my_entry = new JDTEntry(startCombo.getSelectedItem().toString(), endCombo.getSelectedItem().toString(), fieldAction.getText());
+                // Save the new JDTEntry in JDTEntries ArrayList
+                JDTEntries.add(my_entry);
+                // Sort the JDTEntries based on start_time
+                sort_jdtentries(JDTEntries);
 
-            if (actionListLocal[itemNumber][0] != null || actionListLocal[itemNumber][1] != null || actionListLocal[itemNumber][2] != null) {
-                startCombo.setSelectedItem(actionListLocal[itemNumber][0]);
-                endCombo.setSelectedItem(actionListLocal[itemNumber][1]);
-                fieldAction.setText(actionListLocal[itemNumber][2]);
+                // Increment the cursor position
+                cursor++;
+                // Set the start_time with the previous end_time
+                startCombo.setSelectedItem(endCombo.getSelectedItem());
+                // Clear the body
+                fieldAction.setText("");
+            } else {
+                System.out.println("Next button used without all value");
             }
+
         }
     }
 
+    // Save Button
     class BSListener implements ActionListener {
 
-
         public void actionPerformed(ActionEvent arg0) {
 
-            actionListLocal[itemNumber][0] = startCombo.getSelectedItem().toString();
-            actionListLocal[itemNumber][1] = endCombo.getSelectedItem().toString();
-            actionListLocal[itemNumber][2] = fieldAction.getText(); 
+            // TODO: Call the same code as "Next button", without clearing the body, changing the time or incrementing the cursor
+            sort_jdtentries(JDTEntries);
+            System.out.println(JDTEntries);
+
         }
     }
 
+    // Finish Button
     class BFListener implements ActionListener {
 
-        public void actionPerformed(ActionEvent arg0) {
-            System.out.println(Arrays.deepToString(actionListLocal));
+        private String md_output;
 
+        public void actionPerformed(ActionEvent arg0) {
+
+            sort_jdtentries(JDTEntries);
+
+            md_output = "# Journal de travail " + fieldDate.getText();
+            for (JDTEntry entry : JDTEntries) {
+                md_output += entry.get_md_entry();
+            }
+            md_output += System.lineSeparator() + System.lineSeparator() + "<!-- Generated on " + get_today_iso_date() + " with JDT Maker -->";
+            System.out.println(md_output);
 
             try (FileWriter file = new FileWriter("JDT" + fieldDate.getText() + ".md")) {
-
-                file.write(String.format("# JDT " + fieldDate.getText() + "%n%n"));
-                file.write(String.format("---%n%n"));
-                file.write(String.format("## Summary%n"));
-
-                for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
-                    file.write(String.format("1. " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
-                } 
-
-                file.write(String.format("%n---%n%n"));
-
-                for (int i = 0; actionListLocal[i][0] != null || actionListLocal[i][1] != null || actionListLocal[i][2] != null; i++) {
-                    file.write(String.format("## " + actionListLocal[i][0] + " - " + actionListLocal[i][1] + "%n"));
-                    file.write(String.format("**Action completed :** " + actionListLocal[i][2] + "%n%n"));
-                } 
+                file.write(md_output);
                 file.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            exitMessage.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }
     }
-
 }

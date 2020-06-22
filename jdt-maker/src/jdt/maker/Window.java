@@ -20,6 +20,7 @@ import java.time.Instant.*;
 
 public class Window extends JFrame {
 
+    public String version = "1.0.0-beta";
     private final JPanel container = new JPanel();
     private final JPanel hourPane = new JPanel();
     private final JPanel fieldPane = new JPanel();
@@ -47,6 +48,7 @@ public class Window extends JFrame {
     public JSONObject jsonTitle = new JSONObject();
     public ArrayList<JDTEntry> JDTEntries = new ArrayList<JDTEntry>();
 
+
     public Window() {
         this.setTitle("JDT Maker");
         this.setSize(600, 500);
@@ -59,6 +61,8 @@ public class Window extends JFrame {
 
         exitMenu.setToolTipText("Informations about the application");
         exitMenu.addActionListener((event) -> System.exit(0));
+
+        aboutMenu.addActionListener((event) -> JOptionPane.showMessageDialog(null, "APP PURPOSE : Lorem ipsum \n APP VERSION : " + version, "About", JOptionPane.INFORMATION_MESSAGE));
 
         fileMenu.add(exitMenu);
         helpMenu.add(aboutMenu);

@@ -46,7 +46,7 @@ public class Window extends JFrame {
     public int itemNumber = 0;
     public int cursor = 0; // Used to iterate across JDTEntries items
     public JSONObject jsonTitle = new JSONObject();
-    public JDTEntries entries = new JDTEntries();
+    public JDTList entries = new JDTList();
 
     public Window() {
         this.setTitle("JDT Maker");
@@ -150,11 +150,11 @@ public class Window extends JFrame {
 
             cursor--;
 
-            System.out.println(JDTEntries.size());
+            System.out.println(JDTList.size());
             System.out.println(cursor);
 
             // Get the JDTEntry at the cursor position
-            JDTEntry my_entry = JDTEntries.get(cursor);
+            JDTEntry my_entry = JDTList.get(cursor);
 
             // Set the values
             startCombo.setSelectedItem(my_entry.get_start_time());
@@ -209,7 +209,7 @@ public class Window extends JFrame {
 
             sort_jdtentries(JDTEntries);
 
-            JDTEntries entries_to_md = new JDTEntries(fieldDate.getText(), JDTEntries);
+            JDTList entries_to_md = new JDTList(fieldDate.getText(), JDTEntries);
 
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);

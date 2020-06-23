@@ -16,7 +16,7 @@ import org.json.simple.parser.JSONParser;
 
 import java.time.Instant.*;
 
-public class JDTEntries extends JDTEntry{
+public class JDTList extends JDTEntry{
 
 private String md_output;
 public ArrayList<JDTEntry> ListEntries = new ArrayList<JDTEntry>();

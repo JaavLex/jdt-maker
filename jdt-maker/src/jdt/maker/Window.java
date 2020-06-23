@@ -150,11 +150,11 @@ public class Window extends JFrame {
 
             cursor--;
 
-            System.out.println(JDTList.size());
+            System.out.println(entries.get_list().size());
             System.out.println(cursor);
 
             // Get the JDTEntry at the cursor position
-            JDTEntry my_entry = JDTList.get(cursor);
+            JDTEntry my_entry = entries.get(cursor);
 
             // Set the values
             startCombo.setSelectedItem(my_entry.get_start_time());
@@ -197,8 +197,8 @@ public class Window extends JFrame {
     class BSListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-
-            ListEntries.print();
+            entries.sort_jdtentries();
+            entries.print();
         }
     }
 
@@ -207,9 +207,9 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
 
-            sort_jdtentries(JDTEntries);
+            entries.sort_jdtentries();
 
-            JDTList entries_to_md = new JDTList(fieldDate.getText(), JDTEntries);
+            entries.to_md(fieldDate.getText());
 
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);

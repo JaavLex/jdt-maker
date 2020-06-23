@@ -46,8 +46,7 @@ public class Window extends JFrame {
     public int itemNumber = 0;
     public int cursor = 0; // Used to iterate across JDTEntries items
     public JSONObject jsonTitle = new JSONObject();
-    public ArrayList<JDTEntry> JDTEntries = new ArrayList<JDTEntry>();
-
+    public JDTEntries entries = new JDTEntries();
 
     public Window() {
         this.setTitle("JDT Maker");
@@ -144,17 +143,6 @@ public class Window extends JFrame {
         return df.format(new Date());
     }
 
-    // Well, using Java's LocalTime would probably be better...
-    // Sort ArrayList<JDTEntries> on JDTEntry.ste_start_time()
-    public ArrayList sort_jdtentries(ArrayList JDTEntries) {
-        Collections.sort(JDTEntries, new Comparator<JDTEntry>() {
-            public int compare(JDTEntry s1, JDTEntry s2) {
-                return s1.get_start_time().split(":")[0].compareToIgnoreCase(s2.get_start_time().split(":")[0]);
-            }
-        });
-        return JDTEntries;
-    }
-
     // Previous Button
     class BPListener implements ActionListener {
 
@@ -189,9 +177,8 @@ public class Window extends JFrame {
                 // Create a new JDTEntry
                 JDTEntry my_entry = new JDTEntry(startCombo.getSelectedItem().toString(), endCombo.getSelectedItem().toString(), fieldAction.getText());
                 // Save the new JDTEntry in JDTEntries ArrayList
-                JDTEntries.add(my_entry);
+                entries.add(my_entry);
                 // Sort the JDTEntries based on start_time
-                sort_jdtentries(JDTEntries);
 
                 // Increment the cursor position
                 cursor++;
@@ -211,10 +198,7 @@ public class Window extends JFrame {
 
         public void actionPerformed(ActionEvent arg0) {
 
-            // TODO: Call the same code as "Next button", without clearing the body, changing the time or incrementing the cursor
-            sort_jdtentries(JDTEntries);
-            System.out.println(JDTEntries);
-
+            ListEntries.print();
         }
     }
 

@@ -46,8 +46,7 @@ public class Window extends JFrame {
     public int itemNumber = 0;
     public int cursor = 0; // Used to iterate across JDTEntries items
     public JSONObject jsonTitle = new JSONObject();
-    public ArrayList<JDTEntry> JDTEntries = new ArrayList<JDTEntry>();
-
+    public JDTList entries = new JDTList();
 
     public Window() {
         this.setTitle("JDT Maker");
@@ -144,17 +143,6 @@ public class Window extends JFrame {
         return df.format(new Date());
     }
 
-    // Well, using Java's LocalTime would probably be better...
-    // Sort ArrayList<JDTEntries> on JDTEntry.ste_start_time()
-    public ArrayList sort_jdtentries(ArrayList JDTEntries) {
-        Collections.sort(JDTEntries, new Comparator<JDTEntry>() {
-            public int compare(JDTEntry s1, JDTEntry s2) {
-                return s1.get_start_time().split(":")[0].compareToIgnoreCase(s2.get_start_time().split(":")[0]);
-            }
-        });
-        return JDTEntries;
-    }
-
     // Previous Button
     class BPListener implements ActionListener {
 
@@ -162,11 +150,11 @@ public class Window extends JFrame {
 
             cursor--;
 
-            System.out.println(JDTEntries.size());
+            System.out.println(entries.get_list().size());
             System.out.println(cursor);
 
             // Get the JDTEntry at the cursor position
-            JDTEntry my_entry = JDTEntries.get(cursor);
+            JDTEntry my_entry = entries.get(cursor);
 
             // Set the values
             startCombo.setSelectedItem(my_entry.get_start_time());
@@ -189,9 +177,8 @@ public class Window extends JFrame {
                 // Create a new JDTEntry
                 JDTEntry my_entry = new JDTEntry(startCombo.getSelectedItem().toString(), endCombo.getSelectedItem().toString(), fieldAction.getText());
                 // Save the new JDTEntry in JDTEntries ArrayList
-                JDTEntries.add(my_entry);
+                entries.add(my_entry);
                 // Sort the JDTEntries based on start_time
-                sort_jdtentries(JDTEntries);
 
                 // Increment the cursor position
                 cursor++;
@@ -210,36 +197,19 @@ public class Window extends JFrame {
     class BSListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
-
-            // TODO: Call the same code as "Next button", without clearing the body, changing the time or incrementing the cursor
-            sort_jdtentries(JDTEntries);
-            System.out.println(JDTEntries);
-
+            entries.sort_jdtentries();
+            entries.print();
         }
     }
 
     // Finish Button
     class BFListener implements ActionListener {
 
-        private String md_output;
-
         public void actionPerformed(ActionEvent arg0) {
 
-            sort_jdtentries(JDTEntries);
+            entries.sort_jdtentries();
 
-            md_output = "# Journal de travail " + fieldDate.getText();
-            for (JDTEntry entry : JDTEntries) {
-                md_output += entry.get_md_entry();
-            }
-            md_output += System.lineSeparator() + System.lineSeparator() + "<!-- Generated on " + get_today_iso_date() + " with JDT Maker -->";
-            System.out.println(md_output);
-
-            try (FileWriter file = new FileWriter("JDT" + fieldDate.getText() + ".md")) {
-                file.write(md_output);
-                file.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            entries.to_md(fieldDate.getText());
 
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);

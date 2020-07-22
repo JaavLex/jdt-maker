@@ -17,6 +17,8 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
 import java.time.Instant.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Window extends JFrame {
 
@@ -204,6 +206,8 @@ public class Window extends JFrame {
 
     // Finish Button
     class BFListener implements ActionListener {
+        
+        ProcessBuilder processBuilder = new ProcessBuilder();
 
         public void actionPerformed(ActionEvent arg0) {
 
@@ -211,8 +215,7 @@ public class Window extends JFrame {
 
             entries.to_md(fieldDate.getText());
 
-            String[] cmd = new String[]{"/bin/sh", "../mdtopdfmail.sh"};
-            Process pr = Runtime.getRuntime().exec(cmd);
+            processBuilder.command("bash", "-f=JDT"+fieldDate.getText()+"", "../mdtopdfmail.sh");
 
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);

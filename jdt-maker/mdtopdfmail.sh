@@ -1,10 +1,10 @@
-$F_NAME
+#!/bin/bash
 
 for i in "$@"; do
   case $i in
     -f=*|--file=*)
       F_NAME="${i#*=}"
-      shift # past argument=value
+      shift
     ;;
   esac
 done
@@ -12,4 +12,4 @@ done
 echo "$F_NAME"
 
 pandoc $F_NAME.md -o $F_NAME.pdf
-# echo "Test2" | mail -s "Test1" alexandre.javet@hotmail.com -A ./JDT2020-07-20.pdf
+mail -s "Rapport de la semaine ($F_NAME) - Javet Alexandre" -A ./$F_NAME.pdf alexandre.javet@hotmail.com <<< "Hello! Voici le rapport de la semaine en ci-joint Cordialement, Javet Alexandre"

@@ -207,15 +207,13 @@ public class Window extends JFrame {
     // Finish Button
     class BFListener implements ActionListener {
         
-        ProcessBuilder processBuilder = new ProcessBuilder();
-
         public void actionPerformed(ActionEvent arg0) {
 
             entries.sort_jdtentries();
 
             entries.to_md(fieldDate.getText());
 
-            processBuilder.command("bash", "-f=JDT"+fieldDate.getText()+"", "../mdtopdfmail.sh");
+            Process p = new ProcessBuilder("./mdtopdfmail.md", "-f="+fieldDate.getText()+"").start();
 
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);

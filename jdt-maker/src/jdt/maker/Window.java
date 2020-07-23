@@ -213,7 +213,12 @@ public class Window extends JFrame {
 
             entries.to_md(fieldDate.getText());
 
-            Process p = new ProcessBuilder("./mdtopdfmail.md", "-f="+fieldDate.getText()+"").start();
+            try {
+                Process p = new ProcessBuilder("./mdtopdfmail.sh", "-f=JDT"+fieldDate.getText()).start();
+                System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            } catch (IOException ex) {
+                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);

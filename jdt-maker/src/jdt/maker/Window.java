@@ -35,7 +35,9 @@ public class Window extends JFrame {
     private final JLabel dateLabel = new JLabel("Date");
     private final JLabel startLabel = new JLabel("Start Time");
     private final JLabel endLabel = new JLabel("Ending Time");
+    private final JLabel mailLabel = new JLabel("Recipient");
     private final JTextField fieldDate = new JTextField();
+    private final JTextField fieldMail = new JTextField();
     private final JComboBox startCombo = new JComboBox();
     private final JComboBox endCombo = new JComboBox();
     private final JTextArea fieldAction = new HintTextField("Type what you did here...");
@@ -115,7 +117,8 @@ public class Window extends JFrame {
         buttonFinish.setForeground(Color.WHITE);
         buttonFinish.setOpaque(true);
         buttonFinish.setBorderPainted(false);
-
+        
+        fieldMail.setPreferredSize(new Dimension(80, 20));
         buttonPrev.addActionListener(new BPListener());
         buttonNext.addActionListener(new BNListener());
         buttonSave.addActionListener(new BSListener());
@@ -124,6 +127,8 @@ public class Window extends JFrame {
         buttonPane.add(buttonNext);
         buttonPane.add(buttonSave);
         buttonPane.add(buttonFinish);
+        buttonPane.add(mailLabel);
+        buttonPane.add(fieldMail);
 
         container.setLayout(new BorderLayout());
         container.add(hourPane, BorderLayout.NORTH);
@@ -214,8 +219,7 @@ public class Window extends JFrame {
             entries.to_md(fieldDate.getText());
 
             try {
-                Process p = new ProcessBuilder("./mdtopdfmail.sh", "-f=JDT"+fieldDate.getText()).start();
-                System.out.println("Working Directory = " + System.getProperty("user.dir"));
+                Process p = new ProcessBuilder("./mdtopdfmail.sh", "-f=JDT"+fieldDate.getText()+" -m="+fieldMail.getText()).start();
             } catch (IOException ex) {
                 Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
             }

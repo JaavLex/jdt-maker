@@ -89,6 +89,8 @@ public class Window extends JFrame {
         hourPane.add(startCombo);
         hourPane.add(endLabel);
         hourPane.add(endCombo);
+        
+        startCombo.addActionListener(new startListener());
 
         fieldAction.setPreferredSize(new Dimension(350, 150));
 
@@ -148,6 +150,14 @@ public class Window extends JFrame {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
         df.setTimeZone(tz);
         return df.format(new Date());
+    }
+    
+    class startListener implements ActionListener {
+        
+        public void actionPerformed(ActionEvent arg0) {
+            
+            endCombo.setSelectedItem(startCombo.getSelectedItem());
+        }
     }
 
     // Previous Button
@@ -226,7 +236,6 @@ public class Window extends JFrame {
 
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
-
         }
     }
 }

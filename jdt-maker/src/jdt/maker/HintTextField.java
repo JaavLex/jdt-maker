@@ -16,7 +16,7 @@ public class HintTextField extends JTextArea {
 
         setText(hint);
         setFont(lostFont);
-        setForeground(Color.GRAY);
+        setForeground(Color.BLACK);
 
         this.addFocusListener(new FocusAdapter() {
 

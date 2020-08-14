@@ -10,14 +10,17 @@ import java.lang.reflect.Array;
 import java.text.*;
 import java.awt.event.KeyEvent.*;
 import java.io.*;
+import static java.lang.Integer.parseInt;
 import java.util.*;
 import java.util.ArrayList;
-
 
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
 import java.time.Instant.*;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,7 +64,7 @@ public class Window extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(true);
 
-        this.setBackground(Color.WHITE);
+        this.setBackground(Color.WHITE);        
 
         exitMenu.setToolTipText("Informations about the application");
         exitMenu.addActionListener((event) -> System.exit(0));
@@ -155,9 +158,25 @@ public class Window extends JFrame {
     
     class startListener implements ActionListener {
         
-        public void actionPerformed(ActionEvent arg0) {
+        public void actionPerformed(ActionEvent arg0) {    
+            String strStart = (String) startCombo.getSelectedItem();
+            String strEnd = (String) endCombo.getSelectedItem();
+            String[] startParse = strStart.split(":");
+            String[] endParse = strEnd.split(":");
+            System.out.print(startParse[0] + " " + startParse[1] + "    " + endParse[0] + " " + endParse[1] + "\n\n\n");
+            int diffHour = parseInt(endParse[0]) - parseInt(startParse[0]);
+            System.out.print(diffHour + "\n\n\n");
+            int diffMins = parseInt(endParse[1]) - parseInt(startParse[1]);
+            System.out.print(diffMins + "\n\n\n");
             
-            endCombo.setSelectedItem(startCombo.getSelectedItem());
+            int finalHour = parseInt(startParse[0]) + diffHour;
+            int finalMinute = parseInt(startParse[1]) + diffMins;
+            
+            String endFinal = finalHour + ":" + finalMinute + "0";
+            
+            System.out.print(endFinal  + "\n\n\n");
+            
+            // endCombo.setSelectedItem(endFinal);
         }
     }
 

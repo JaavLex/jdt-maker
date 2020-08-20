@@ -106,13 +106,13 @@ public class Window extends JFrame {
 
         fieldPane.add(fieldAction);
 
-        buttonPrev.setBackground(Color.GRAY);
+        buttonPrev.setBackground(Color.BLACK);
         buttonPrev.setFont(new Font("Verdana", Font.BOLD, 10));
         buttonPrev.setForeground(Color.WHITE);
         buttonPrev.setOpaque(true);
         buttonPrev.setBorderPainted(false);
 
-        buttonNext.setBackground(Color.BLUE);
+        buttonNext.setBackground(Color.GREEN);
         buttonNext.setFont(new Font("Verdana", Font.BOLD, 10));
         buttonNext.setForeground(Color.WHITE);
         buttonNext.setOpaque(true);
@@ -124,7 +124,7 @@ public class Window extends JFrame {
         buttonSave.setOpaque(true);
         buttonSave.setBorderPainted(false);
 
-        buttonFinish.setBackground(Color.GREEN);
+        buttonFinish.setBackground(Color.GRAY);
         buttonFinish.setFont(new Font("Verdana", Font.BOLD, 10));
         buttonFinish.setForeground(Color.WHITE);
         buttonFinish.setOpaque(true);

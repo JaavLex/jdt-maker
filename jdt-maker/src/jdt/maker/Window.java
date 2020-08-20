@@ -1,15 +1,16 @@
 package jdt.maker;
 
 // v1.0.0-beta
-
+import java.util.Properties;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.*;      
 import javax.swing.event.*;
 import java.lang.reflect.Array;
 import java.text.*;
 import java.awt.event.KeyEvent.*;
 import java.io.*;
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import java.util.*;
 import java.util.ArrayList;
@@ -55,7 +56,8 @@ public class Window extends JFrame {
     public int cursor = 0; // Used to iterate across JDTEntries items
     public JSONObject jsonTitle = new JSONObject();
     public JDTList entries = new JDTList();
-
+    public int timeDiff = 120;
+    
     public Window() {
         this.setTitle("JDT Maker");
         this.setSize(600, 500);
@@ -95,6 +97,10 @@ public class Window extends JFrame {
         hourPane.add(endCombo);
         
         startCombo.addActionListener(new startListener());
+        endCombo.addActionListener(new endListener());
+        
+        startCombo.setSelectedItem("8:00");
+        endCombo.setSelectedItem("10:00");
 
         fieldAction.setPreferredSize(new Dimension(350, 150));
 
@@ -157,26 +163,33 @@ public class Window extends JFrame {
     }
     
     class startListener implements ActionListener {
-        
+
+        public void actionPerformed(ActionEvent arg0) {       
+            String foo = (String) startCombo.getSelectedItem();
+            String[] fooArr = foo.split(":");
+            double newTime = (parseDouble(fooArr[0])*60 + parseDouble(fooArr[1]) + timeDiff)/60;
+            String strnewTime = Double.toString(newTime);
+            String[] finalArr = strnewTime.split("\\.");
+
+            if (parseInt(finalArr[1]) > 0) {
+                endCombo.setSelectedItem(finalArr[0] + ":30");
+            } else {
+                endCombo.setSelectedItem(finalArr[0] + ":00");
+            }       
+        }
+    }
+    
+    class endListener implements ActionListener {
+
         public void actionPerformed(ActionEvent arg0) {    
-            String strStart = (String) startCombo.getSelectedItem();
-            String strEnd = (String) endCombo.getSelectedItem();
-            String[] startParse = strStart.split(":");
-            String[] endParse = strEnd.split(":");
-            System.out.print(startParse[0] + " " + startParse[1] + "    " + endParse[0] + " " + endParse[1] + "\n\n\n");
-            int diffHour = parseInt(endParse[0]) - parseInt(startParse[0]);
-            System.out.print(diffHour + "\n\n\n");
-            int diffMins = parseInt(endParse[1]) - parseInt(startParse[1]);
-            System.out.print(diffMins + "\n\n\n");
+            String foo = (String) startCombo.getSelectedItem();
+            String foo2 = (String) endCombo.getSelectedItem();
+            String[] fooArr = foo.split(":");
+            String[] fooArr2 = foo2.split(":");
+            int startTime = parseInt(fooArr[0])*60 + parseInt(fooArr[1]);
+            int endTime = parseInt(fooArr2[0])*60 + parseInt(fooArr2[1]);
             
-            int finalHour = parseInt(startParse[0]) + diffHour;
-            int finalMinute = parseInt(startParse[1]) + diffMins;
-            
-            String endFinal = finalHour + ":" + finalMinute + "0";
-            
-            System.out.print(endFinal  + "\n\n\n");
-            
-            // endCombo.setSelectedItem(endFinal);
+            timeDiff = endTime - startTime;
         }
     }
 
@@ -248,12 +261,16 @@ public class Window extends JFrame {
 
             entries.to_md(fieldDate.getText());
 
+            //String homeDir = System.getenv("HOME");
+            String[] cmd = { "./mdtopdfmail.sh", "-f=JDT"+fieldDate.getText(), "-m="+fieldMail.getText() };
             try {
-                Process p = new ProcessBuilder("./mdtopdfmail.sh", "-f=JDT"+fieldDate.getText()+" -m="+fieldMail.getText()).start();
+                Process p = Runtime.getRuntime().exec(cmd);
             } catch (IOException ex) {
                 Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+            System.out.print("./mdtopdfmail.sh -f=JDT"+fieldDate.getText()+" -m="+fieldMail.getText());
+            
             JOptionPane.showMessageDialog(null, "JDT" + fieldDate.getText() + ".md has been created in the project directory. The application will now shut down.", "MarkDown creation", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
         }

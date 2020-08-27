@@ -38,10 +38,6 @@ This is to go to the previous action in order to edit it for instance. It will a
 
 This is to create a new action or naviguate to the next action. It will also save all the modification you did on the action you were before clicking the button.
 
-### Save Button
-
-Not working now, but normally saves without having to click prev or next.
-
 ### Finish Button
 
 Creates the .md file with all your actions formatted into MarkDown, Converts it to PDF, and sends it via email to recipient.
@@ -51,7 +47,47 @@ Creates the .md file with all your actions formatted into MarkDown, Converts it 
 Input the mail address you want to send your .pdf file.
 
 ## How does sending your mail work ?
-(WIP)
+**(ONLY WORKS ON LINUX AND OSX FOR NOW)**
+
+- sudo apt install mailutils
+- sudo apt install msmtp msmtp-mta
+- touch ~/.msmtprc
+- chmod 600 ~/.msmtprc
+
+- nano ~/.msmtprc
+
+**Copy paste the following :**
+
+```
+# Default values for all accounts
+defaults
+auth           on
+tls            on
+tls_starttls   on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.msmtp.log
+
+# Example of a setup for a gmail account
+account        gmail
+auth           plain
+host           smtp.gmail.com
+port           587
+from           example@gmail.com
+user           example@gmail.com
+password       password
+
+# Define a default account
+account default : gmail
+```
+- Replace `from` and `user` field with your gmail account.
+- Go to your [google account security page](https://myaccount.google.com/security)
+- Activate double factor authentification
+- A new option will appear : "Application Passwords", click on it
+- Create a new application password and copy it
+- Go back into ~/.msmtprc
+- Replace the `password` field with your application password
+
+**You should be now good to go !**
 
 ## How do I run it ?
 .jar files will be given later in order to execute it easily. For the moment, you either have to run it in netbeans or a similar IDE, or compile the code into a .jar file.

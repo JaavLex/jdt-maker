@@ -9,8 +9,8 @@ import javax.swing.JTextArea;
 
 public class HintTextField extends JTextArea {
 
-    Font gainFont = new Font("Tahoma", Font.PLAIN, 11);
-    Font lostFont = new Font("Tahoma", Font.ITALIC, 11);
+    Font gainFont = new Font("Tahoma", Font.PLAIN, 14);
+    Font lostFont = new Font("Tahoma", Font.ITALIC, 14);
 
     public HintTextField(final String hint) {
 

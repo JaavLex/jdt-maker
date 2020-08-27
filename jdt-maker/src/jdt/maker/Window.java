@@ -35,6 +35,7 @@ public class Window extends JFrame {
     private final JMenuBar menuBar = new JMenuBar();
     private final JMenu fileMenu = new JMenu("File");
     private final JMenuItem exitMenu = new JMenuItem("Exit");
+    private final JMenuItem saveMenu = new JMenuItem("Save");
     private final JMenu helpMenu = new JMenu("Help");
     private final JMenuItem aboutMenu = new JMenuItem("About");
     private final JLabel dateLabel = new JLabel("Date");
@@ -48,7 +49,6 @@ public class Window extends JFrame {
     private final JTextArea fieldAction = new HintTextField("Type what you did here...");
     private final JButton buttonPrev = new JButton("Prev");
     private final JButton buttonNext = new JButton("Next");
-    private final JButton buttonSave = new JButton("Save");
     private final JButton buttonFinish = new JButton("Finish");
     private final JOptionPane exitMessage = new JOptionPane();
     private final String[][] actionListLocal = new String[50][3];
@@ -60,7 +60,8 @@ public class Window extends JFrame {
     
     public Window() {
         this.setTitle("JDT Maker");
-        this.setSize(600, 500);
+        this.setSize(800, 500);
+        this.setMinimumSize(new Dimension(800, 500));
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -70,10 +71,14 @@ public class Window extends JFrame {
 
         exitMenu.setToolTipText("Informations about the application");
         exitMenu.addActionListener((event) -> System.exit(0));
+        
+        saveMenu.setToolTipText("Save current actions");
+        saveMenu.addActionListener(new saveListener());
 
         aboutMenu.addActionListener((event) -> JOptionPane.showMessageDialog(null, "APP PURPOSE : Lorem ipsum \n APP VERSION : " + version, "About", JOptionPane.INFORMATION_MESSAGE));
 
         fileMenu.add(exitMenu);
+        fileMenu.add(saveMenu);
         helpMenu.add(aboutMenu);
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
@@ -89,12 +94,23 @@ public class Window extends JFrame {
         }
 
         fieldDate.setPreferredSize(new Dimension(80, 20));
+        fieldMail.setPreferredSize(new Dimension(200, 20));
+        dateLabel.setFont(new Font("Verdana", Font.BOLD, 14));
+        fieldDate.setFont(new Font("Verdana", Font.PLAIN, 14));
+        startLabel.setFont(new Font("Verdana", Font.BOLD, 14));
+        startCombo.setFont(new Font("Verdana", Font.PLAIN, 14));
+        endLabel.setFont(new Font("Verdana", Font.BOLD, 14));
+        endCombo.setFont(new Font("Verdana", Font.PLAIN, 14));
+        mailLabel.setFont(new Font("Verdana", Font.BOLD, 14));
+        fieldMail.setFont(new Font("Verdana", Font.PLAIN, 10));
         hourPane.add(dateLabel);
         hourPane.add(fieldDate);
         hourPane.add(startLabel);
         hourPane.add(startCombo);
         hourPane.add(endLabel);
         hourPane.add(endCombo);
+        hourPane.add(mailLabel);
+        hourPane.add(fieldMail);
         
         startCombo.addActionListener(new startListener());
         endCombo.addActionListener(new endListener());
@@ -102,45 +118,40 @@ public class Window extends JFrame {
         startCombo.setSelectedItem("8:00");
         endCombo.setSelectedItem("10:00");
 
-        fieldAction.setPreferredSize(new Dimension(350, 150));
+        fieldAction.setPreferredSize(new Dimension(700, 350));
+        fieldAction.setFont(new Font("Verdana", Font.BOLD, 14));
+        fieldAction.setLineWrap(true);
+        fieldAction.setWrapStyleWord(true);
 
         fieldPane.add(fieldAction);
 
-        buttonPrev.setBackground(Color.BLACK);
-        buttonPrev.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonPrev.setBackground(new java.awt.Color(1,149,203));
+        buttonPrev.setFont(new Font("Verdana", Font.BOLD, 14));
         buttonPrev.setForeground(Color.WHITE);
         buttonPrev.setOpaque(true);
         buttonPrev.setBorderPainted(false);
+        buttonPrev.setPreferredSize(new Dimension(80, 30));
 
-        buttonNext.setBackground(Color.GREEN);
-        buttonNext.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonNext.setBackground(new java.awt.Color(0,188,255));
+        buttonNext.setFont(new Font("Verdana", Font.BOLD, 14));
         buttonNext.setForeground(Color.WHITE);
         buttonNext.setOpaque(true);
         buttonNext.setBorderPainted(false);
+        buttonNext.setPreferredSize(new Dimension(80, 30));
 
-        buttonSave.setBackground(Color.BLUE);
-        buttonSave.setFont(new Font("Verdana", Font.BOLD, 10));
-        buttonSave.setForeground(Color.WHITE);
-        buttonSave.setOpaque(true);
-        buttonSave.setBorderPainted(false);
-
-        buttonFinish.setBackground(Color.GRAY);
-        buttonFinish.setFont(new Font("Verdana", Font.BOLD, 10));
+        buttonFinish.setBackground(new java.awt.Color(29,189,61));
+        buttonFinish.setFont(new Font("Verdana", Font.BOLD, 14));
         buttonFinish.setForeground(Color.WHITE);
         buttonFinish.setOpaque(true);
         buttonFinish.setBorderPainted(false);
+        buttonFinish.setPreferredSize(new Dimension(80, 30));
         
-        fieldMail.setPreferredSize(new Dimension(80, 20));
         buttonPrev.addActionListener(new BPListener());
         buttonNext.addActionListener(new BNListener());
-        buttonSave.addActionListener(new BSListener());
         buttonFinish.addActionListener(new BFListener());
         buttonPane.add(buttonPrev);
         buttonPane.add(buttonNext);
-        buttonPane.add(buttonSave);
         buttonPane.add(buttonFinish);
-        buttonPane.add(mailLabel);
-        buttonPane.add(fieldMail);
 
         container.setLayout(new BorderLayout());
         container.add(hourPane, BorderLayout.NORTH);
@@ -243,8 +254,8 @@ public class Window extends JFrame {
         }
     }
 
-    // Save Button
-    class BSListener implements ActionListener {
+    // Save menu [STILL DOESN'T WORK]
+    class saveListener implements ActionListener {
 
         public void actionPerformed(ActionEvent arg0) {
             entries.sort_jdtentries();
